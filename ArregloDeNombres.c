@@ -2,25 +2,16 @@
 #include <string.h>
 #include <stdlib.h>
 
-void BuscarNombre(int id, char *nombre[])
+int BuscarNombre(char palabra[], char *nombre[])
 {
-    int aux = 0;
     for (int i = 0; i < 5; i++)
     {
-        if (id == i)
+        if (strstr(nombre[i], palabra) != NULL)
         {
-            aux = 1;
+            return i;
         }
     }
-
-    if (aux == 1)
-    {
-        puts(nombre[id]);
-    }
-    else
-    {
-        puts("No se encontro el valor");
-    }
+    return -1;
 }
 
 int main()
@@ -46,10 +37,21 @@ int main()
         printf("%s \n", nombre[i]);
     }
 
-    int id;
-    printf("ingrese Un id a buscar");
-    scanf("%d", &id);
-    BuscarNombre(id, nombre);
+    printf("ingrese la palabra\n");
+    fgets(buff, 100, stdin);
+    buff[strcspn(buff, "\n")] = '\0';
+    char *palabra;
+    palabra = (char *)malloc((strlen(buff) + 1) * sizeof(char));
+    strcpy(palabra,buff);
+    int id = BuscarNombre(palabra, nombre);
+    if (id != -1)
+    {
+        puts(nombre[id]);
+    }
+    else
+    {
+        printf("no se encontro esa palabra");
+    }
 
     return 0;
 }
